@@ -1,71 +1,129 @@
-import java.util.*;
+// import Stack.*;
+public class Queue {
+  int SIZE,size;
+  int arr[] ;
+  int front, rear;
 
-class Queue{
-	private int size,front, rear; 
-	private int[] q;
-	private int count=0;
+  Queue(int SIZE) {
+    this.SIZE=SIZE;
+    arr = new int[SIZE];
+    front = -1;
+    size=0;
+    rear = -1;
+  }
 
-	Queue(int n){
-		size=n;
-		q=new int[size];
-		front=0;
-		rear=-1;
-	}
+  public int peek(){
+    if(!isEmpty()){
+     return (arr[this.front]);
+    }      System.out.println("Queue is Empty");
+    return-1;
+  }
 
-	public void enq(int item){
-		if( isFull()) System.out.println("Queue Over flow");
-		else{
-			rear=(rear+1)%size;
-			q[rear]= item;
-			count++;
-		}
-			
-	}
-	public void dq(){
-		if(isEmpty()) System.out.println("Queue is Empyty");
-		else{
-			front= (front+1)%size;
-			count--;
-		}
-			
-	}
-	public int peek(){
-		if(isEmpty()){
-			System.out.println("Queue is Empty");
-			return -1;
-		}
-		else
-			return q[front];	
-	}
-	public int size(){
-		return count;
-	}
-	public boolean isEmpty(){
-		return (size()==0);
-	}
-	public boolean isFull(){
-		return (size()==size);
-	}
+  public void enQueue(int element) {
 
-public static void main(String[] args) {
-
-        Queue q = new Queue(5);
-        q.enq(1);
-        q.enq(2);
-        q.enq(3);
-        
-        System.out.println("Front element is: " + q.peek());
-        q.dq();
-        System.out.println("Front element is: " + q.peek());
- 
-        System.out.println("Queue size is " + q.size());
- 
-        q.dq();
-        q.dq();
-        
-        if (q.isEmpty())
-            System.out.println("Queue Is Empty");
-        else
-            System.out.println("Queue Is Not Empty");
+    if (isFull()) {
+      System.out.println("Queue is full");
     }
+    else {
+      if (front == -1) {
+        front = 0;
+      }
+      SIZE++;
+      rear++;
+      arr[rear] = element;
+    }
+  }
+
+  public int deQueue() {
+    int element;
+    if (isEmpty()) {
+      System.out.println("Queue is empty");
+      return (-1);
+    }
+    else {
+      element = arr[front];
+
+      if (front >= rear) {
+        front = -1;
+        rear = -1;
+      }
+      else {
+        front++;
+      }
+      SIZE--;
+      return (element);
+    }
+  }
+
+  public int size(){
+    return size;
+  }
+
+  public void reverse()
+    {
+        Stack stack = new Stack(this.SIZE);
+        while (!this.isEmpty()) {
+            stack.push(this.peek());
+            this.deQueue();
+        }
+        while (!stack.isEmpty()) {
+            this.enQueue(stack.peek());
+            stack.pop();
+        }
+    
+}
+  public boolean isFull() {
+    if (front == 0 && rear == SIZE - 1) {
+      return true;
+    }
+    return false;
+  }
+
+  public  boolean isEmpty() {
+    if (front == -1)
+      return true;
+    else
+      return false;
+  }
+
+
+  public boolean contains(int element){
+    
+    for (int i = front; i <= rear; i++)
+        if(arr[i]==element) return true;
+    return false;
+
+  }
+
+  public void display() {
+    int i;
+    if (isEmpty()) {
+      System.out.println("Empty Queue");
+    }
+    else {
+      System.out.print("Queue: ");
+      for (i = front; i <= rear; i++)
+        System.out.print(arr[i] + "  ");
+    }
+  }
+
+
+}
+class Main{
+  
+  public static void main(String[] args) {
+    Queue q = new Queue(10);
+
+
+    q.deQueue();
+    for(int i = 1; i < 10; i ++) {
+      q.enQueue(i);
+    }
+    q.enQueue(10);
+    q.display();
+    q.deQueue();
+    q.display();
+    q.reverse();
+    q.display();
+  }
 }
